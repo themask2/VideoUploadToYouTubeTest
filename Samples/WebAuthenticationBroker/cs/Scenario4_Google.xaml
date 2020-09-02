@@ -53,6 +53,14 @@
                     <StackPanel Background="Transparent" Orientation="Horizontal" Margin="0,10,0,0">
                         <Button Content="Subir Video" Width="325" FontFamily="Lucida Bright" FontWeight="Bold" FontStyle="Normal" Click="SubirVideoAsync" Background="DarkGray"/>
                     </StackPanel>
+
+                    <StackPanel Background="Transparent" Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock x:Name="LoginNameTextBlock" Text="...Nome..." Width="325" FontFamily="Lucida Bright" FontWeight="Bold" FontStyle="Normal"/>
+                    </StackPanel>
+
+                    <StackPanel Background="Green" Orientation="Horizontal" Margin="0,10,0,0">
+                        <Image x:Name="ImgThumbnail" Width="100" Height="100"/>
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
 

@@ -19,6 +19,7 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.Web.Http;
 
 namespace WebAuthentication
@@ -38,6 +39,8 @@ namespace WebAuthentication
         String Response;
         String Token_Access;
         String Token_Reresh;
+        private String ChannelTitle;
+        private String Thumbnail_uri;
 
         public Scenario4_Google()
         {
@@ -95,16 +98,29 @@ namespace WebAuthentication
                 int pFrom = Response.IndexOf("\"access_token\": ") + "\"access_token\": ".Length;
                 int pTo = Response.LastIndexOf("\"expires_in\":");
 
-                this.Token_Access = Response.Substring(pFrom, pTo - pFrom).Replace("\"", "").Replace(",", "").Replace("\n","").Trim();
+                this.Token_Access = Response.Substring(pFrom, pTo - pFrom).Replace("\"", "").Replace(",", "").Replace("\n", "").Trim();
 
                 pFrom = Response.IndexOf("\"refresh_token\": ") + "\"refresh_token\": ".Length;
                 pTo = Response.LastIndexOf("\"scope\"");
                 this.Token_Reresh = Response.Substring(pFrom, pTo - pFrom).Replace("\"", "").Replace(",", "").Replace("\n", "").Trim();
+
+                await Task.Run(ShowBasicUserInfo);
             }
             catch (Exception Error)
             {
                 rootPage.NotifyUser(Error.Message, NotifyType.ErrorMessage);
             }
+
+            if (this.ChannelTitle != "" || this.ChannelTitle != null)
+                LoginNameTextBlock.Text = ChannelTitle;
+
+            if (this.Thumbnail_uri != "" || this.Thumbnail_uri != null)
+            {
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri(this.Thumbnail_uri));
+                ImgThumbnail.Source = img.Source;
+            }
+
         }
 
         private async void SubirVideoAsync(object sender, RoutedEventArgs e)
@@ -135,32 +151,58 @@ namespace WebAuthentication
             return fileOpenPicker;
         }
 
+        private async Task ShowBasicUserInfo()
+        {
+            GoogleCredential cred = GoogleCredential.FromAccessToken(Token_Access);
+
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = cred,
+                ApplicationName = "MyYouTubeTest"
+            });
+
+            var listRequest = youtubeService.Channels.List("id");
+            listRequest.Mine = true;
+            var searchListResponse = listRequest.Execute();
+            string channelId = searchListResponse.Items[0].Id;
+            Debug.Write(channelId);
+
+            listRequest = youtubeService.Channels.List("snippet");
+            listRequest.Id = channelId;
+            searchListResponse = listRequest.Execute();
+            this.ChannelTitle = searchListResponse.Items[0].Snippet.Title;
+            Debug.Write(ChannelTitle);
+            this.Thumbnail_uri = searchListResponse.Items[0].Snippet.Thumbnails.Default__.Url;
+            Debug.Write(Thumbnail_uri);
+
+        }
+
         private async Task UploadTheFile()
         {
-//            string[] scopes = new string[] {
-//                PlusService.Scope.PlusLogin,
-//                PlusService.Scope.UserinfoEmail,
-//                PlusService.Scope.UserinfoProfile
-//};
+            //            string[] scopes = new string[] {
+            //                PlusService.Scope.PlusLogin,
+            //                PlusService.Scope.UserinfoEmail,
+            //                PlusService.Scope.UserinfoProfile
+            //};
 
-//            var flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
-//            {
-//                ClientSecrets = new ClientSecrets
-//                {
-//                    ClientId = this.ClientID,
-//                    ClientSecret = this.ClientSecret
-//                },
-//                Scopes = scopes,
-//                DataStore = new FileDataStore("Store")
-//            });
+            //            var flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
+            //            {
+            //                ClientSecrets = new ClientSecrets
+            //                {
+            //                    ClientId = this.ClientID,
+            //                    ClientSecret = this.ClientSecret
+            //                },
+            //                Scopes = scopes,
+            //                DataStore = new FileDataStore("Store")
+            //            });
 
-//            var token = new TokenResponse
-//            {
-//                AccessToken = Token_Access,
-//                RefreshToken = Token_Reresh
-//            };
+            //            var token = new TokenResponse
+            //            {
+            //                AccessToken = Token_Access,
+            //                RefreshToken = Token_Reresh
+            //            };
 
-//            var credential = new UserCredential(flow, Environment.UserName, token);
+            //            var credential = new UserCredential(flow, Environment.UserName, token);
 
             GoogleCredential cred = GoogleCredential.FromAccessToken(Token_Access);
 
