@@ -31,15 +31,18 @@
             <TextBlock>Windows Phone Store SID: <Run x:Name="WindowsPhoneStoreSidTextBlock"/></TextBlock>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <TextBlock Style="{StaticResource BasicTextStyle}" Text="App ID: " VerticalAlignment="Center" Width="85"/>
-                <TextBox x:Name="FacebookClientID" Width="200" Text=""/>
+                <TextBox x:Name="FacebookClientID" Width="200" Text="634395434138810"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="50">
                 <TextBlock Style="{StaticResource BasicTextStyle}" Text="Site URL: " VerticalAlignment="Center" Width="85"/>
-                <TextBox x:Name="FacebookCallbackUrl" Height="14" Width="200" Text="https://www.facebook.com/connect/login_success.html"/>
+                <TextBox x:Name="FacebookCallbackUrl" Width="200" Text="https://www.facebook.com/connect/login_success.html" VerticalAlignment="Top"/>
             </StackPanel>
             <Button x:Name="Launch" Content="Launch" Click="Launch_Click" Margin="0,10,0,0"/>
             <TextBlock Margin="0,10,0,0">Token: <Run x:Name="FacebookReturnedToken"/></TextBlock>
             <TextBlock Margin="0,10,0,0">User Name: <Run x:Name="FacebookUserName"/></TextBlock>
+            <StackPanel Background="Transparent" Orientation="Horizontal" Margin="0,10,0,0">
+                <Button Content="Subir FB Video" Width="325" FontFamily="Lucida Bright" FontWeight="Bold" FontStyle="Normal" Click="SubirFBVideoAsync" Background="DarkGray"/>
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Page>
