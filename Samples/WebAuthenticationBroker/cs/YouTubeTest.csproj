@@ -182,6 +182,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Facebook.Client">
+      <Version>1.0.4</Version>
+    </PackageReference>
     <PackageReference Include="Google.Apis.Plus.v1">
       <Version>1.49.0.1627</Version>
     </PackageReference>

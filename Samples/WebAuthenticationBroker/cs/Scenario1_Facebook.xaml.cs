@@ -10,8 +10,6 @@
 //*********************************************************
 
 using Facebook;
-using winsdkfb;
-using winsdkfb.Graph;
 using Newtonsoft.Json;
 using SDKTemplate;
 using System;
@@ -30,7 +28,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
 using Windows.Foundation.Collections;
-using WabCS;
 using System.IO;
 using System.Net.Http;
 
